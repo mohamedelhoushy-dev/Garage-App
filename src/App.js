@@ -131,7 +131,7 @@ export default function GarageFloorPlan() {
         setSlots(data);
       } else {
         const initial = {};
-        for(let i = 1; i <= 8; i++) initial[i] = { id: i, occupied: false, owner: "", brand: "", plate: "", color: SLOT_COLORS[0], departure: "" };
+        for (let i = 1; i <= 9; i++) initial[i] = { id: i, occupied: false, owner: "", brand: "", plate: "", color: SLOT_COLORS[0], departure: "" };
         set(slotsRef, initial);
       }
     });
@@ -180,14 +180,17 @@ export default function GarageFloorPlan() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#080b14", color: "#e0e4f0", padding: 20, fontFamily: "sans-serif" }}>
+
       <div style={{ maxWidth: 640, margin: "0 auto 20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <h1 style={{ margin: 0 }}>Garage Map</h1>
         <div style={{ textAlign: "right" }}>
-          <span style={{ fontSize: 24, fontWeight: "bold" }}>{occupiedCount}</span> / 8 occupied
+          <span style={{ fontSize: 24, fontWeight: "bold" }}>{occupiedCount}</span> / 9 occupied
         </div>
       </div>
 
       <div style={{ maxWidth: 640, margin: "0 auto", display: "grid", gap: 10 }}>
+
+        {/* Row 1: Slot 3 (big) + Slots 1 & 2 (stacked) */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
           <SlotBox slot={S(3)} onClick={setEditing}/>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -195,6 +198,8 @@ export default function GarageFloorPlan() {
             <SlotBox slot={S(2)} onClick={setEditing} compact/>
           </div>
         </div>
+
+        {/* Row 2: Slots 5, 6, 7 (stacked) + Slot 4 (big) */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             <SlotBox slot={S(5)} onClick={setEditing} compact/>
@@ -203,7 +208,13 @@ export default function GarageFloorPlan() {
           </div>
           <SlotBox slot={S(4)} onClick={setEditing}/>
         </div>
-        <SlotBox slot={S(8)} onClick={setEditing}/>
+
+        {/* Row 3: Slots 8 & 9 side by side (replacing old single slot 8) */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+          <SlotBox slot={S(8)} onClick={setEditing}/>
+          <SlotBox slot={S(9)} onClick={setEditing}/>
+        </div>
+
       </div>
 
       {editing && <Modal slot={editing} onSave={handleSave} onClose={() => setEditing(null)} />}
